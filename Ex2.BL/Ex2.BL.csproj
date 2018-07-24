@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C322DD9F-6154-4AC7-A36C-B97EDD782A0E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ex2.BL</RootNamespace>
+    <AssemblyName>Ex2.BL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AspectInjector.Broker, Version=1.0.1.0, Culture=neutral, PublicKeyToken=a29e12442a3d3609, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspectInjector.1.0.1\lib\net45\AspectInjector.Broker.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="Aspects\TraceAspect.cs" />
+    <Compile Include="Entities\DirectoryWatcher.cs" />
+    <Compile Include="Entities\Factories\FileInfoFactory.cs" />
+    <Compile Include="Entities\Factories\FileSystemWatcherFactory.cs" />
+    <Compile Include="Entities\MailSender.cs" />
+    <Compile Include="Entities\Factories\SmtpClientFactory.cs" />
+    <Compile Include="Entities\PipeLineHandlers\BaseFileInfoHandler.cs" />
+    <Compile Include="Entities\Builders\MailMessageBuilder.cs" />
+    <Compile Include="Entities\Builders\PipeLineBuilder.cs" />
+    <Compile Include="Entities\PipeLineHandlers\CriticalAndCancelExceptionHandler.cs" />
+    <Compile Include="Entities\PipeLineHandlers\FileDeleteHandler.cs" />
+    <Compile Include="Entities\PipeLineHandlers\FileSendHandler.cs" />
+    <Compile Include="Entities\Validators\MailMessageValidator.cs" />
+    <Compile Include="Entities\Wrappers\FileSystemWatcherWrapper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Entities\Wrappers\FileInfoWrapper.cs" />
+    <Compile Include="Entities\Wrappers\SmtpClientWrapper.cs" />
+    <Compile Include="Exceptions\SmptClientException.cs" />
+    <Compile Include="Exceptions\EmptyCollectionException.cs" />
+    <Compile Include="Exceptions\InvalidMailExeption.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ex2.Infrastructure\Ex2.Infrastructure.csproj">
+      <Project>{24c8d9d6-354b-4fe6-a119-9ef69536d72d}</Project>
+      <Name>Ex2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ex3.DI\Ex3.DI.csproj">
+      <Project>{baf94cf3-1a96-4311-88a9-f8123d79c508}</Project>
+      <Name>Ex3.DI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MinimumRecommendedRules.ruleset" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AspectInjector.1.0.1\build\AspectInjector.targets" Condition="Exists('..\packages\AspectInjector.1.0.1\build\AspectInjector.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\AspectInjector.1.0.1\build\AspectInjector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\AspectInjector.1.0.1\build\AspectInjector.targets'))" />
+  </Target>
+</Project>
